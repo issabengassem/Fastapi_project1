@@ -1,14 +1,14 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 app = FastAPI()
 
-from fastapi.middleware.cors import CORSMiddleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],      # للتجربة فقط، يسمح لأي واجهة HTML بالاتصال
-    allow_methods=["*"],      # يسمح بكل أنواع الطلبات GET, POST...
-    allow_headers=["*"],      # يسمح بكل الـ headers
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 class Student(BaseModel):
@@ -20,6 +20,10 @@ students = [
     Student(id=1, name="issa", grade=5),
     Student(id=2, name="sara", grade=6),
 ]
+
+@app.get("/")
+def home():
+    return {"message": "FastAPI app is running"}
 
 @app.get("/students/")
 def read_students():
